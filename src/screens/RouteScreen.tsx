@@ -1,34 +1,49 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { View, Text, FlatList, Image } from "react-native";
+import { useRoute, RouteProp } from "@react-navigation/native";
+import { RutaResponse } from "../models/RutaResponse"; 
+
+type RouteParams = {
+  Route: { rutaResponse: RutaResponse };
+};
 
 export default function RouteScreen() {
-    const navigation = useNavigation<any>();
+  const route = useRoute<RouteProp<RouteParams, "Route">>();
+  const { rutaResponse } = route.params;
 
-    return (
-        <View className="flex-1 justify-center items-center bg-white px-6">
-            <Text className="text-2xl font-bold mb-6">HOJA DE RUTA</Text>
+  return (
+    <View className="flex-1 bg-white p-4">
+      {/* 🔹 Metadatos */}
+      <View className="mb-4">
+        <Text className="text-lg font-bold">Ruta generada</Text>
+        <Text>Fecha: {rutaResponse.metadata.fecha}</Text>
+        <Text>Hora: {rutaResponse.metadata.hora}</Text>
+      </View>
 
-            <TextInput
-                placeholder="Correo electrónico"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4"
-            />
-            <TextInput
-                placeholder="Contraseña"
-                secureTextEntry
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4"
-            />
+      {/* 🔹 Lista de nodos */}
+      <FlatList
+        data={rutaResponse.nodos}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View className="mb-6">
+            {/* Mensaje */}
+            <Text className="text-blue-600 font-semibold">{item.mensaje}</Text>
 
-            <TouchableOpacity className="bg-blue-500 w-full py-3 rounded-lg">
-                <Text className="text-center text-white font-semibold">
-                    Ingresar
-                </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-                <Text className="mt-4 text-blue-600 font-semibold">
-                    ¿No tienes una cuenta? Regístrate
-                </Text>
-            </TouchableOpacity>
-        </View>
-    );
+            {/* Nodo */}
+            <View className="bg-gray-200 p-4 rounded-lg mt-2">
+              <Text className="text-black font-bold">{item.nombre}</Text>
+              <Text className="text-gray-700">{item.descripcion}</Text>
+              <Image
+                source={{ uri: item.imagen }}
+                style={{ width: "100%", height: 150, borderRadius: 8, marginTop: 8 }}
+                resizeMode="cover"
+              />
+              <Text className="text-gray-500 mt-2">Lat: {item.lat}</Text>
+              <Text className="text-gray-500">Lng: {item.lng}</Text>
+            </View>
+          </View>
+        )}
+      />
+    </View>
+  );
 }
