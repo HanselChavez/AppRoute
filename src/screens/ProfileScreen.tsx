@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity } from "react-native";
-
+// Pagina para modificar el perfil
 export default function ProfileScreen({ onLogout }: { onLogout: () => void }) {
   return (
     <View className="flex-1 justify-center items-center bg-white">
-      <Text className="text-2xl font-bold mb-6">👤 Perfil</Text>
+      <Text className="text-2xl font-bold mb-6">👤 Perfil2</Text>
 
       <TouchableOpacity
         onPress={onLogout}

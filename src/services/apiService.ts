@@ -1,7 +1,8 @@
 import axios, {AxiosError} from "axios";
 import { RutaResponse } from "../models/RutaResponse";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const API = axios.create({
+export const API = axios.create({
   baseURL: "https://approute.free.beeceptor.com", // AQUI CAMBIAMOS LA URL
   headers: { "Content-Type": "application/json" },
   timeout: 10000, // 10s DE ESPERA POR SI SE CAE EL SERVER xd
@@ -45,6 +46,23 @@ API.interceptors.response.use(
     return Promise.reject(new Error(mensaje));
   }
 );
+
+//VER FUNCIONAMIENTO SI SE PUEDE USAR EN CONJUNTO cON EL DE ARRIBA
+API.interceptors.request.use(async (config) => {
+  const raw = await AsyncStorage.getItem("user_session");
+  if (raw) {
+    try {
+      const session = JSON.parse(raw);
+      if (session?.token) {
+        config.headers.Authorization = `Bearer ${session.token}`;
+      }
+    } catch (error) {
+      console.log("Error leyendo token del storage:", error);
+    }
+  }
+  return config;
+});
+
 
 
 

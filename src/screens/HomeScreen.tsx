@@ -2,10 +2,14 @@ import React, {useState} from "react";
 import { View, Text, TouchableOpacity, TextInput, Alert } from "react-native";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { buscarRuta } from "../services/apiService";
+import { useAuth } from "../context/AuthContext";
+
+
 
 export default function HomeScreen() {
   const navigation = useNavigation<any>();
-
+  //DEBUG
+    const { login, user, token } = useAuth();
 
   const [origen, setOrigen] = useState("");
   const [destino, setDestino] = useState("");
@@ -35,8 +39,7 @@ export default function HomeScreen() {
       {/* 🔹 Header */}
       <View className=" w-full flex-row items-center mt-14">
         {/* MENU */}
-        <View className="flex-1 items-start"
-        >
+        <View className="flex-1 items-start">
           <TouchableOpacity
           onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
           >
@@ -109,6 +112,9 @@ export default function HomeScreen() {
           <Text className="text-gray-500">No hay salones recientes</Text>
         </View>
       </View>
+      <Text selectable style={{ fontSize: 12 }}>
+                  {JSON.stringify({ user, token }, null, 2)}
+                  </Text>
     </View>
   );
 }
