@@ -3,6 +3,13 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext"; // <-- usamos el contexto
 import Toast from "react-native-toast-message";
+//Solo debug
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import HomeScreen from "./HomeScreen";
+
+
+
+
 export default function LoginScreen() {
   const navigation = useNavigation<any>();
   const { login, user, token } = useAuth(); // función login del AuthContext

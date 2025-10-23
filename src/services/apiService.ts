@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const API = axios.create({
   baseURL: "https://approute.free.beeceptor.com", // AQUI CAMBIAMOS LA URL
+  //baseURL: "https://approutebackend.onrender.com/api",
   headers: { "Content-Type": "application/json" },
   timeout: 10000, // 10s DE ESPERA POR SI SE CAE EL SERVER xd
 });
@@ -84,12 +85,22 @@ export const register = async (userData: {
 
 /* -------------- Endpoints de Rutas---------------*/
 
+export const getAllNodos = async () => {
+  const response = await API.get("/nodes");
+  return response.data;
+};
+
 export const buscarRuta = async (
   origen: string,
   destino: string
 ): Promise<RutaResponse> => {
-  const response = await API.post("/rutas", { origen, destino });
-  return response.data;
+  try { 
+    const response = await API.post("/rutas/calcular_ruta", { origen, destino });
+    return response.data;
+  } catch (error: any) {
+    console.error("Error al calcular ruta:", error.message);
+    throw error;
+  }
 };
 
 export const getRutasRecientes = async () => {

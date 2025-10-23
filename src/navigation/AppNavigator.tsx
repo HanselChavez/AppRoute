@@ -12,6 +12,7 @@ import { useAuth } from "../context/AuthContext";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import RouteScreen from "../screens/RouteScreen";
+import NodeDetailScreen from "../screens/NodeDetailScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -29,6 +30,12 @@ function HomeStack() {
         component={RouteScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen 
+        name="NodeDetail" 
+        component={NodeDetailScreen}
+        options={{ headerShown: false }}
+      />
+
     </Stack.Navigator>
   );
 }
@@ -59,7 +66,7 @@ function CustomDrawerContent(props: any) {
       {/* Botón de cerrar sesión */}
       <TouchableOpacity
         className="bg-red-500 py-3 mx-4 mb-6 rounded-lg"
-        onPress={logout} // 👈 Ahora llama directamente al logout del contexto
+        onPress={logout} // Ahora llama directamente al logout del contexto
       >
         <Text className="text-center text-white font-semibold">
           Cerrar sesións

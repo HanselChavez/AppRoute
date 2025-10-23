@@ -22,7 +22,7 @@ function MainNavigator() {
   const { user, loading, logout } = useAuth();
 
   if (loading) return null; // sigue splash screen
-
+  
   return (
     <NavigationContainer>
       {user ? (
@@ -33,6 +33,25 @@ function MainNavigator() {
     </NavigationContainer>
   );
 }
+
+/*
+    <NavigationContainer>
+      {user ? (
+        <AppNavigator onLogout={logout} />
+      ) : (
+        <AuthNavigator />
+      )}
+    </NavigationContainer>
+
+    Otro
+
+    <NavigationContainer>
+
+        <AppNavigator onLogout={logout}/>
+
+    </NavigationContainer>    
+
+ */
 
 
 export default function App() {
