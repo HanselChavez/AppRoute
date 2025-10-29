@@ -1,10 +1,10 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { useAuth } from "../context/AuthContext";
 // Pagina para modificar el perfil
-    const { login, user, token } = useAuth();
 
 
 export default function ProfileScreen({ onLogout }: { onLogout: () => void }) {
+    const { login, user, token } = useAuth();
   return (
     <View className="flex-1 bg-white items-center justify-center px-6">
       {/* Avatar */}
