@@ -3,9 +3,10 @@ import { RutaResponse } from "../models/RutaResponse";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const API = axios.create({
-  baseURL: "https://approute.free.beeceptor.com", // AQUI CAMBIAMOS LA URL
-  //baseURL: "https://approutebackend.onrender.com/api",
-  headers: { "Content-Type": "application/json" },
+  //baseURL: "https://approute.free.beeceptor.com", // AQUI CAMBIAMOS LA URL
+  baseURL: "https://approutebackend.onrender.com",
+  //baseURL: "http://192.168.1.7:3000", // Cambiar a la IP de la computadora
+  headers: { "Content-Type": "application/json" },  
   timeout: 10000, // 10s DE ESPERA POR SI SE CAE EL SERVER xd
 });
 
@@ -95,7 +96,7 @@ export const buscarRuta = async (
   destino: string
 ): Promise<RutaResponse> => {
   try { 
-    const response = await API.post("/rutas/calcular_ruta", { origen, destino });
+    const response = await API.post("rutas/calcular_ruta", { origen, destino });
     return response.data;
   } catch (error: any) {
     console.error("Error al calcular ruta:", error.message);

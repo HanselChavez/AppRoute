@@ -5,14 +5,19 @@ import {
 } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View,Image } from "react-native";
 import { useAuth } from "../context/AuthContext";
 
 //Aqui pon las pantallitas que ameritan xd
 import HomeScreen from "../screens/HomeScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 import RouteScreen from "../screens/RouteScreen";
 import NodeDetailScreen from "../screens/NodeDetailScreen";
+
+//aqui pantallas de navegacion
+import SettingsScreen from "../screens/SettingsScreen";
+import FavoritesScreen from "../screens/FavoritesScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -47,17 +52,25 @@ function CustomDrawerContent(props: any) {
   return (
     <View className="flex-1 mt-16">
       {/* Header con círculo */}
-      <View className="items-center mt-10 mb-6 mt-10">
-        <View className="w-24 h-24 bg-blue-500 rounded-full items-center justify-center">
-          <Text className="text-white text-2xl font-bold">
-            {user?.nombre?.[0]?.toUpperCase() || "?"}
-          </Text>
-        </View>
-        <Text className="mt-3 text-lg font-semibold">
+      <View className="w-32 h-32 rounded-full bg-gray-200 self-center my-6">
+        {user?.foto ? (
+          <Image
+            source={{ uri: user.foto }}
+            className="w-full h-full"
+            resizeMode="cover"
+          />
+        ) : (
+          <Image
+            source={{uri: "https://cdn-icons-png.flaticon.com/512/149/149071.png"}}
+            className="w-full h-full"
+            resizeMode="cover"
+          />
+        )}
+        <Text className="mt-3 text-lg font-semibold items-center text-center">
           {user?.nombre || "Invitado"}
         </Text>
       </View>
-
+      
       {/* Pantallas normales */}
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
@@ -87,16 +100,22 @@ export default function AppNavigator({ onLogout }: { onLogout: () => void }) {
         headerShown: false,
         drawerType: "front",
         drawerPosition: "left",
-      }}
+        overlayColor: "rgba(0, 0, 0, 0.5)",
+        headerTintColor: "#744444ff",
+        drawerActiveBackgroundColor: "#d3d3d3ff", // Color de fondo del ítem activo
+        drawerActiveTintColor: "#000000ff",
+        drawerItemStyle: { 
+          marginHorizontal: 0,
+          borderRadius: 0
+        }
+      }} 
     drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      <Drawer.Screen name="                   Inicio" component={HomeStack} />
-      <Drawer.Screen name="       👤       Perfil">
+      <Drawer.Screen name="       INICIO" component={HomeStack} />
+      <Drawer.Screen name="       AJUSTES">
         {() => <ProfileScreen onLogout={onLogout} />}
       </Drawer.Screen>
-      <Drawer.Screen name="       ⭐       Favoritos" component={HomeStack} />
-      <Drawer.Screen name="       🔧       Ajustes" component={HomeStack} />
+      <Drawer.Screen name="       FAVORITOS" component={FavoritesScreen} />
     </Drawer.Navigator>
-
   );
 }

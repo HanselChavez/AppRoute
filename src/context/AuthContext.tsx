@@ -6,10 +6,15 @@
 
   // Tipo del usuario
   interface User {
-    id: string;
-    nombre: string;
-    email: string;
-  }
+  id: string;
+  nombre: string;
+  email: string;
+  telefono?: string;   // opcional
+  foto?: string;       // url de avatar, opcional
+  role?: string;       // ej. "student" / "admin"
+  confirmed?: boolean; // si la cuenta está verificada
+  // puedes añadir más campos que el backend envíe en el futuro
+}
 
   interface AuthContextProps {
     user: User | null;
