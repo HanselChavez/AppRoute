@@ -16,15 +16,18 @@ export default function HeaderApp({ title = "APPROUTE" }: HeaderAppProps) {
         <TouchableOpacity
           onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
         >
-          <Text className="text-3xl font-bold">☰</Text>
+          <Text 
+          className="text-3xl font-bold">☰</Text>
         </TouchableOpacity>
       </View>
 
       {/* TITULO */}
       <View className="absolute left-0 right-0 flex-1 items-center">
         <Text
-          style={{ fontFamily: "Kadwa_700Bold", fontSize: 30 }}
-          className="font-bold"
+          style={{ 
+            fontFamily: "Kadwa_700Bold", 
+            fontSize: 32 }}
+          
         >
           {title}
         </Text>

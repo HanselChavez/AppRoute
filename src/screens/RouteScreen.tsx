@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, FlatList, Image } from "react-native";
+import { View, Text, FlatList, Image,TouchableOpacity } from "react-native";
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { RutaResponse } from "../models/RutaResponse"; 
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
 
 
 type RouteParams = {
@@ -12,6 +13,7 @@ type RouteParams = {
 export default function RouteScreen() {
   const route = useRoute<RouteProp<RouteParams, "Route">>();
   const { rutaResponse } = route.params;
+  const navigation = useNavigation<any>();
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -48,7 +50,10 @@ export default function RouteScreen() {
                   </Text>
                 </View>
                 {/* Nodo - TARJETA DEL NODO*/}
-                <View className="flex-row border-2 rounded-lg p-2 mt-2 mx-2 border-gray-300">
+                <TouchableOpacity 
+                onPress={() => navigation.navigate("NodeDetail", { nodo: item })}
+                className="flex-row border-2 rounded-lg p-2 mt-2 mx-2 border-gray-300">
+
                   <View className="w-3/5">
                     {/*<Text className="text-sm text-gray-500">ID: {item.id}</Text>*/}
                     <Text className="text-black font-bold">{item.nombre}</Text>
@@ -62,7 +67,7 @@ export default function RouteScreen() {
                     style={{ width: "40%", height: 150, borderRadius: 8, marginTop: 8 }}
                     resizeMode="cover"
                   />
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
           )}

@@ -115,8 +115,35 @@ export const getPerfil = async () => {
   const response = await API.get("/perfil");
   return response.data;
 };
-
-export const updatePerfil = async (perfilData: any) => {
+/*
+export const ukpdatePerfil = async (perfilData: any) => {
   const response = await API.put("/perfil", perfilData);
+  return response.data;
+};*/
+
+export const updatePerfil = async (perfilData: {
+  nombre: string;
+  telefono: string;
+  imagen?: any; // puede ser { uri, type, name }
+}) => {
+  const formData = new FormData();
+
+  formData.append("nombre", perfilData.nombre);
+  formData.append("telefono", perfilData.telefono);
+
+  if (perfilData.imagen) {
+    formData.append("imagen", {
+      uri: perfilData.imagen.uri,
+      type: perfilData.imagen.type,
+      name: perfilData.imagen.name,
+    }as any);
+  }
+
+  const response = await API.put("/perfil", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
   return response.data;
 };

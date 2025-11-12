@@ -66,6 +66,10 @@ export default function HomeScreen() {
       const data = await buscarRuta(origen, destino); // Llamada al servicio
       console.log("Respuesta API:", data);
 
+      if (!data) {
+        Alert.alert("Sin resultados", "No se encontró una ruta entre los puntos ingresados.");
+        return;
+      }
       // VAMOS A ROUTESCREEN
       navigation.navigate("Route", { rutaResponse: data });
     } catch (error) {
@@ -216,6 +220,9 @@ export default function HomeScreen() {
         </View>
 
       </View>
+      <Text selectable style={{ fontSize: 12 }}>
+                  {JSON.stringify({ user, token }, null, 2)}
+                  </Text>
     </SafeAreaView>
     
   );

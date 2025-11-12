@@ -23,6 +23,7 @@
     login: (email: string, password: string) => Promise<boolean>;
     register: (nombre: string, email: string, password: string) => Promise<boolean>;
     logout: () => Promise<void>;
+    setUser: React.Dispatch<React.SetStateAction<User | null>>;
   }
 
   // Ya no pongo todos las propiedades porque igual las mando en el props
@@ -134,7 +135,7 @@
 
     return (
       <AuthContext.Provider
-        value={{ user, token, loading, login, register, logout }}
+        value={{ user, token, loading, login, register, logout,setUser }}
       >
         {children}
       </AuthContext.Provider>
