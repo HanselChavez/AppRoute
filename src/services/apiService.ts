@@ -49,6 +49,26 @@ API.interceptors.response.use(
   }
 );
 
+// Recuerda que los interceptores se ejecutan en el orden inverso, osea primero lee el ultimo y luego el primero
+API.interceptors.request.use(request => {
+  console.log("📤 Request:", {
+    method: request.method,
+    url: request.baseURL + request.url,
+    headers: request.headers,
+    data: request.data,
+  });
+  return request;
+});
+API.interceptors.response.use(response => {
+  console.log("📤 response:", {
+    method: response.method,
+    url: response.baseURL + response.url,
+    headers: response.headers,
+    data: response.data,
+  });
+  return response;
+});
+
 //VER FUNCIONAMIENTO SI SE PUEDE USAR EN CONJUNTO cON EL DE ARRIBA
 API.interceptors.request.use(async (config) => {
   const raw = await AsyncStorage.getItem("user_session");
@@ -105,6 +125,7 @@ export const buscarRuta = async (
 };
 
 export const getRutasRecientes = async () => {
+  console.log("🛰️ Llamando a endpoint:", "/rutas/recientes");
   const response = await API.get("/rutas/recientes");
   return response.data;
 };

@@ -44,6 +44,28 @@ function HomeStack() {
     </Stack.Navigator>
   );
 }
+function RoutesWardStack() {
+  return (
+    <Stack.Navigator screenOptions={{ animation: "fade" }}>
+      <Stack.Screen
+        name="RoutesWard"
+        component={FavoritesScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Route"
+        component={RouteScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="NodeDetail" 
+        component={NodeDetailScreen}
+        options={{ headerShown: false }}
+      />
+
+    </Stack.Navigator>
+  );
+}
 
 //CustomDrawer personalizado uu
 function CustomDrawerContent(props: any) {
@@ -82,7 +104,7 @@ function CustomDrawerContent(props: any) {
         onPress={logout} // Ahora llama directamente al logout del contexto
       >
         <Text className="text-center text-white font-semibold">
-          Cerrar sesións
+          Cerrar sesión
         </Text>
       </TouchableOpacity>
     </View>
@@ -115,7 +137,7 @@ export default function AppNavigator({ onLogout }: { onLogout: () => void }) {
       <Drawer.Screen name="       AJUSTES">
         {() => <ProfileScreen onLogout={onLogout} />}
       </Drawer.Screen>
-      <Drawer.Screen name="       FAVORITOS" component={FavoritesScreen} />
+      <Drawer.Screen name="       HISTORIAL" component={RoutesWardStack} />
     </Drawer.Navigator>
   );
 }

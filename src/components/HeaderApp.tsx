@@ -22,12 +22,14 @@ export default function HeaderApp({ title = "APPROUTE" }: HeaderAppProps) {
       </View>
 
       {/* TITULO */}
-      <View className="absolute left-0 right-0 flex-1 items-center">
+      <View className="absolute left-0 right-0 flex-1 items-center justify-center">
         <Text
           style={{ 
             fontFamily: "Kadwa_700Bold", 
-            fontSize: 32 }}
-          
+            fontSize: 32,
+            textAlign: "center",
+            lineHeight: 36
+          }}
         >
           {title}
         </Text>

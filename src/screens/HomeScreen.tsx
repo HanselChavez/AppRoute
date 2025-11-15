@@ -20,6 +20,10 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  //filtro de nodos
+  const prefijosBloqueados = ["A_", "B_", "D_", "E_"];
+
+
   // Para el autocompletado de  origen y destino
   const [filteredOrigen, setFilteredOrigen] = useState<any[]>([]);
   const [filteredDestino, setFilteredDestino] = useState<any[]>([]);
@@ -32,7 +36,13 @@ export default function HomeScreen() {
 
     try {
       const data = await getAllNodos();
-      setNodos(data);
+      // limpiamos los datos para obviar nodos innecesarios como las escaleras
+      const nodosFiltrados = data.filter((n) => {
+        // true si NO empieza por ningún prefijo bloqueado
+        return !prefijosBloqueados.some((pref) => n.code.startsWith(pref));
+      });
+
+      setNodos(nodosFiltrados);
     } catch (error) {
       //console.error("Error al obtener nodos:", error);
       setError(true); // activa el modo error
@@ -194,7 +204,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
           {/* Aquí puedes poner una FlatList para los salones recientes */}
           {loading ? (
-            <ActivityIndicator size="large" color="#3be688ff" />
+            <ActivityIndicator size="large" color="#006cfaff" />
           ) : error ? (
             <View className="items-center">
               <Text className="text-red-500 mb-4 text-center">
@@ -209,7 +219,7 @@ export default function HomeScreen() {
             </View>
           ) : (
             <FlatList
-              className="w-full"
+              className="w-full "
               data={nodos}
               keyExtractor={(item) => item._id}
               numColumns={2}
@@ -220,9 +230,7 @@ export default function HomeScreen() {
         </View>
 
       </View>
-      <Text selectable style={{ fontSize: 12 }}>
-                  {JSON.stringify({ user, token }, null, 2)}
-                  </Text>
+
     </SafeAreaView>
     
   );
