@@ -9,7 +9,9 @@
     "newArchEnabled": true,
     "updates": {
       "enabled": true,
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "checkAutomatically": "ON_LOAD",
+      "url": "https://u.expo.dev/feb6f3a2-3555-4776-8471-cc98beca7335"
     },
     "splash": {
       "image": "./assets/splash-icon.png",
@@ -37,6 +39,9 @@
       "eas": {
         "projectId": "feb6f3a2-3555-4776-8471-cc98beca7335"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }

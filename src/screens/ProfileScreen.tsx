@@ -39,10 +39,16 @@ export default function ProfileScreen({ onLogout }: { onLogout: () => void }) {
           name: "perfil.jpg",
         };
 
-        setImagen(imageFile);
-
+        
+              // sse muestra el toast o alerta de éxito
+        if (imageFile) {
+          setImagen(imageFile);
+          Alert.alert("✅ Imagen actualizada", "Ahora actualiza tus datos para guardar los cambios.");
+        } else {
+          //Alert.alert("✅ Éxito", "Datos actualizados correctamente.");
+        }
         // Enviar directamente la actualización al backend
-        await handleActualizarDatos(imageFile);
+        //await handleActualizarDatos(imageFile);
       }
     } catch (error) {
       Alert.alert("Error", "No se pudo abrir la galería.");
@@ -61,7 +67,7 @@ export default function ProfileScreen({ onLogout }: { onLogout: () => void }) {
 
       // Crear objeto con datos del perfil
       const perfilData: any = { nombre, telefono };
-      if (imageFile) perfilData.imagen = imageFile;
+      if (imagen) perfilData.imagen = imagen;
 
       const response = await updatePerfil(perfilData);
 
@@ -73,12 +79,7 @@ export default function ProfileScreen({ onLogout }: { onLogout: () => void }) {
         setUser(refreshed.user || refreshed);
       }
 
-      // sse muestra el toast o alerta de éxito
-      if (imageFile) {
-        Alert.alert("✅ Imagen actualizada", "Tu foto de perfil se ha actualizado correctamente.");
-      } else {
-        Alert.alert("✅ Éxito", "Datos actualizados correctamente.");
-      }
+
 
       /*  // Esto esta por porbar a futuro xd
       Toast.show({
@@ -181,6 +182,9 @@ export default function ProfileScreen({ onLogout }: { onLogout: () => void }) {
             Cerrar Sesión
           </Text>
         </TouchableOpacity>
+          <Text selectable style={{ fontSize: 8 }}>
+            {JSON.stringify({ user, token }, null, 2)}
+          </Text>
       </View>
     </SafeAreaView>
   );

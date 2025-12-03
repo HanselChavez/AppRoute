@@ -48,6 +48,8 @@ function MainNavigator() {
 // ----------------------------------------------------------
 export default function App() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
+  const [updateDismissed, setUpdateDismissed] = useState(false);
+
 
   // cargar fuentes xd
   const [fontsLoaded] = useFonts({
@@ -114,7 +116,7 @@ export default function App() {
         <MainNavigator />
 
         {/* mensaje flotante si hay update xd */}
-        {updateAvailable && (
+        {updateAvailable && !updateDismissed && (
           <View
             style={{
               position: "absolute",
@@ -127,6 +129,18 @@ export default function App() {
               elevation: 5,
             }}
           >
+            {/* Botón X para cerrar */}
+            <TouchableOpacity
+              onPress={() => setUpdateDismissed(true)}
+              style={{
+                position: "absolute",
+                top: 8,
+                right: 8,
+                padding: 5,
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 18 }}>✕</Text>
+            </TouchableOpacity>
             <Text style={{ color: "white", fontSize: 16, marginBottom: 10 }}>
               Nueva actualización disponible
             </Text>

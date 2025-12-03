@@ -25,7 +25,7 @@ export default function NodeDetailScreen({ route }: any) {
       {nodo.connections && nodo.connections.length > 0 ? (
         nodo.connections.map((conn: any, i: number) => (
           <Text key={i} className="text-gray-700">
-            → {conn.destination.name} ({conn.weight})
+            → {conn.destination.name} ({conn.weight}) {conn.destination.image} 
           </Text>
         ))
       ) : (

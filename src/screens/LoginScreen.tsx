@@ -46,6 +46,7 @@ export default function LoginScreen() {
 
         <TextInput
           placeholder="Correo electrónico"
+          placeholderTextColor="#818792ff" 
           value={email}
           onChangeText={setEmail}
           className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4"
@@ -53,6 +54,7 @@ export default function LoginScreen() {
 
         <TextInput
           placeholder="Contraseña"
+          placeholderTextColor="#818792ff" 
           value={password}
           onChangeText={setPassword}
           secureTextEntry
