@@ -1,28 +1,35 @@
-import 'react-native-reanimated';
-import 'react-native-gesture-handler';
-import React, { useState, useEffect } from "react";
+import "react-native-reanimated";
+import "react-native-gesture-handler";
+
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import * as Updates from "expo-updates";
 import { NavigationContainer } from "@react-navigation/native";
-//import AsyncStorage from "@react-native-async-storage/async-storage";
-//Esto para usar fuentes
+
+// fuentes
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts, Kadwa_400Regular, Kadwa_700Bold } from "@expo-google-fonts/kadwa";
+
+// contexto de autenticacion xd
 import { AuthProvider, useAuth } from "./src/context/AuthContext";
 
-
-
-
+// navegadores xd
 import AuthNavigator from "./src/navigation/AuthNavigator";
 import AppNavigator from "./src/navigation/AppNavigator";
 
-//Esto deja todo en el logo si no hay nada cargado
+// mantener splash hasta que todo cargue xd
 SplashScreen.preventAutoHideAsync();
 
 
+// ----------------------------------------------------------
+// componente principal de navegacion xd
+// ----------------------------------------------------------
 function MainNavigator() {
   const { user, loading, logout } = useAuth();
 
-  if (loading) return null; // sigue splash screen
-  
+  // esperar a que cargue el estado del usuario xd
+  if (loading) return null;
+
   return (
     <NavigationContainer>
       {user ? (
@@ -34,92 +41,126 @@ function MainNavigator() {
   );
 }
 
-/*
-    <NavigationContainer>
-      {user ? (
-        <AppNavigator onLogout={logout} />
-      ) : (
-        <AuthNavigator />
-      )}
-    </NavigationContainer>
-
-    Otro
-
-    <NavigationContainer>
-
-        <AppNavigator onLogout={logout}/>
-
-    </NavigationContainer>    
-
- */
 
 
+// ----------------------------------------------------------
+// app principal con manejo de fuentes + actualizaciones xd
+// ----------------------------------------------------------
 export default function App() {
-  //const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  //const [loading, setLoading] = useState<boolean>(true); // Para mostrar pantalla de carga mientras revisamos
+  const [updateAvailable, setUpdateAvailable] = useState(false);
+  const [updateDismissed, setUpdateDismissed] = useState(false);
 
-  //FUENTES varidas
-  let [fontsLoaded] = useFonts({
+
+  // cargar fuentes xd
+  const [fontsLoaded] = useFonts({
     Kadwa_400Regular,
     Kadwa_700Bold,
   });
 
-  /* ESTO YA NO PORQUE LO MOVIMOS EN EL CONTEXT - BORRADO
-  //ESTO SERA UN LOOp que revisara el auth
-  useEffect(() => {
-    const checkLogin = async () => {
-      try {
-        const token = await AsyncStorage.getItem("token");
-        if (token) {
-          setIsLoggedIn(true);
-        }
-      } catch (error) {
-        console.log("Error revisando sesión:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    checkLogin();
-  }, []);
-  */
-
-  // Esto oculta el splash cuando las fuentes y la carga están listas fll
+  // ocultar splash cuando cargan las fuentes xd
   useEffect(() => {
     if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
 
-  // Si aún no está todo listo, no mostrar nada (sigue el splash)
-  if (!fontsLoaded) {
-    return null;
+
+  // checkear actualizaciones solo en produccion xd
+  useEffect(() => {
+    if (!__DEV__) {
+      checkForUpdates();
+    }
+  }, []);
+
+  // indicar en consola cuando esta en modo dev xd
+  if (__DEV__) {
+    console.log("modo desarrollo: ota desactivado xd");
   }
 
-  /* ESTO TAMBIEN FUE MOVIDO AL CONTEXT - BORRADO
-  // Esto es pa cambiar a logueado 
-  const handleLogin = async (token: string) => {
-    try {
-      await AsyncStorage.setItem("token", token); // Guardar token
-      setIsLoggedIn(true);
-    } catch (error) {
-      console.log("Error guardando sesión:", error);
-    }
-  };
 
-  // Esto te desloguea p
-  const handleLogout = async () => {
+  // funcion para ver si hay update xd
+  async function checkForUpdates() {
     try {
-      await AsyncStorage.removeItem("token");
-      setIsLoggedIn(false);
+      const result = await Updates.checkForUpdateAsync();
+      if (result.isAvailable) {
+        setUpdateAvailable(true);
+      }
     } catch (error) {
-      console.log("Error cerrando sesión:", error);
+      console.log("error al chequear updates xd:", error);
     }
-  };
-  */
-  return ( //Navegadores
+  }
+
+  // funcion para aplicar update xd
+  async function applyUpdate() {
+    try {
+      await Updates.fetchUpdateAsync();
+      await Updates.reloadAsync();
+    } catch (error) {
+      console.log("error aplicando update xd:", error);
+    }
+  }
+
+
+  // mostrar nada mientras cargan fuentes xd
+  if (!fontsLoaded) return null;
+
+
+  // ----------------------------------------------------------
+  // render principal xd
+  // ----------------------------------------------------------
+  return (
     <AuthProvider>
-      <MainNavigator />
+      <View style={{ flex: 1 }}>
+        
+        {/* navegacion principal xd */}
+        <MainNavigator />
+
+        {/* mensaje flotante si hay update xd */}
+        {updateAvailable && !updateDismissed && (
+          <View
+            style={{
+              position: "absolute",
+              bottom: 20,
+              left: 20,
+              right: 20,
+              backgroundColor: "#222",
+              padding: 16,
+              borderRadius: 10,
+              elevation: 5,
+            }}
+          >
+            {/* Botón X para cerrar */}
+            <TouchableOpacity
+              onPress={() => setUpdateDismissed(true)}
+              style={{
+                position: "absolute",
+                top: 8,
+                right: 8,
+                padding: 5,
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 18 }}>✕</Text>
+            </TouchableOpacity>
+            <Text style={{ color: "white", fontSize: 16, marginBottom: 10 }}>
+              Nueva actualización disponible
+            </Text>
+
+            <TouchableOpacity
+              onPress={applyUpdate}
+              style={{
+                backgroundColor: "#b42c14ff",
+                paddingVertical: 10,
+                borderRadius: 8,
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
+                Actualizar ahora
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
     </AuthProvider>
-    
   );
 }

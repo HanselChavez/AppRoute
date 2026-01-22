@@ -7,7 +7,14 @@ module.exports = {
     "./app/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        principal: "#28a745",   // verde que te guste
+        secundario: "#b42c14",  // tu rojo
+        fondo: "#111111",
+        texto: "#ffffff"
+      },
+    },
   },
   plugins: [],
 }

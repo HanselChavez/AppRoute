@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, FlatList, Image } from "react-native";
+import { View, Text, FlatList, Image,TouchableOpacity } from "react-native";
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { RutaResponse } from "../models/RutaResponse"; 
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
 
 
 type RouteParams = {
@@ -12,6 +13,7 @@ type RouteParams = {
 export default function RouteScreen() {
   const route = useRoute<RouteProp<RouteParams, "Route">>();
   const { rutaResponse } = route.params;
+  const navigation = useNavigation<any>();
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -28,13 +30,13 @@ export default function RouteScreen() {
           data={rutaResponse.nodos}
           keyExtractor={(item) => item.id.toString()}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <View className="flex-row ">
               {/* ICONO ↓↓↓ */}
               <View className="items-center w-1/6">
                 {/* CIRCULASOS xd*/}
                 <View className="w-10 h-10 rounded-full bg-blue-500 justify-center items-center">
-                  <Text className="text-white font-bold">{item.id}</Text>
+                  <Text className="text-white font-bold">{(index +1).toString()}</Text>
                 </View>
                 {/* LINEA*/}
                 <View className="w-1 h-36 bg-blue-300" />
@@ -44,17 +46,20 @@ export default function RouteScreen() {
                 {/* Mensaje */}
                 <View className="">
                   <Text className="text-blue-600 font-semibold pl-4">
-                    Camina al punto: {item.mensaje}
+                    {item.mensaje}
                   </Text>
                 </View>
                 {/* Nodo - TARJETA DEL NODO*/}
-                <View className="flex-row border-2 rounded-lg p-2 mt-2 mx-2 border-gray-300">
+                <TouchableOpacity 
+                onPress={() => navigation.navigate("NodeDetail", { nodo: item })}
+                className="flex-row border-2 rounded-lg p-2 mt-2 mx-2 border-gray-300">
+
                   <View className="w-3/5">
-                    <Text className="text-sm text-gray-500">ID: {item.id}</Text>
+                    {/*<Text className="text-sm text-gray-500">ID: {item.id}</Text>*/}
                     <Text className="text-black font-bold">{item.nombre}</Text>
                     <Text className="text-gray-700">{item.descripcion}</Text>
-                    <Text className="text-gray-500 mt-2">Lat: {item.lat}</Text>
-                    <Text className="text-gray-500">Lng: {item.lng}</Text>
+                    {/*<Text className="text-gray-500 mt-2">Lat: {item.lat}</Text>*/}
+                    {/*<Text className="text-gray-500">Lng: {item.lng}</Text>*/}
                   </View>
                   <Image
                     className=""
@@ -62,7 +67,7 @@ export default function RouteScreen() {
                     style={{ width: "40%", height: 150, borderRadius: 8, marginTop: 8 }}
                     resizeMode="cover"
                   />
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
           )}
