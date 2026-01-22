@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const API = axios.create({
   baseURL: "https://approutebackend.onrender.com",
+  //baseURL: "https://approute.free.beeceptor.com",
   timeout: 10000,
 });
 
